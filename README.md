@@ -14,7 +14,7 @@ The following requirements are met:
 
 ## To run
 
-	Run Main.main() method
+	Run main() method in the src/com/company/matcher/Main.java class
 
 ## Output example
 	
