@@ -12,6 +12,10 @@ The following requirements are met:
 * There is several concurrent matchers (i.e each matcher runs in a separate thread)
 * The results are printed (in no particular order) after all text pieces have been processed
 
-Example of one line from the program output:
+## To run
+
+	Run Main.main() method
+
+## Output example
 	
     Timothy --> [[lineOffset=13000, charOffset=19775], [lineOffset=13000, charOffset=42023]]
