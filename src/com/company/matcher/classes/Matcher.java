@@ -53,17 +53,17 @@ public class Matcher implements Callable<HashMap<String, List<StringLocation>>> 
     /**
      * Collects locations for a word.
      */
-    private void collect(HashMap<String, List<StringLocation>> word2locations, String wordString, int lineOffset, int charOffset) {
+    private void collect(HashMap<String, List<StringLocation>> word2locations, String word, int lineOffset, int charOffset) {
         // Add the word location to the list of locations
-        if (!word2locations.containsKey(wordString)) {
+        if (!word2locations.containsKey(word)) {
             List<StringLocation> locations = new ArrayList<>();
 
-            word2locations.put(wordString, locations);
+            word2locations.put(word, locations);
         }
 
-        List<StringLocation> locations = word2locations.get(wordString);
+        List<StringLocation> locations = word2locations.get(word);
 
-        locations.add(new StringLocation(initialLineOffset + lineOffset + 1, charOffset + 1 - wordString.length()));
+        locations.add(new StringLocation(initialLineOffset + lineOffset + 1, charOffset + 1 - word.length()));
     }
 
     /**
