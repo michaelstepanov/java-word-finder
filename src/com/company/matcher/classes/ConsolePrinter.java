@@ -12,12 +12,10 @@ public class ConsolePrinter implements Printer {
         for (Map.Entry<String, List<StringLocation>> entry : word2locations.entrySet()) {
             String word = entry.getKey();
             List<StringLocation> locations = entry.getValue();
+            String joinedLocations = String.join(", ", StringLocation.castLocationsToStringList(locations));
 
             System.out.print(word + " --> [");
-
-            String joinedLocations = String.join(", ", StringLocation.castLocationsToStringList(locations));
             System.out.print(joinedLocations);
-
             System.out.print("]");
             System.out.println();
         }
