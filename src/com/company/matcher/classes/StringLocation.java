@@ -18,7 +18,7 @@ public class StringLocation {
     }
 
     /**
-     * Castsa list of locations to a list of strings.
+     * Casts a list of locations to a list of strings.
      */
     public static List<String> castLocationsToStringList(List<StringLocation> locations) {
         List<String> locationsStrings = new ArrayList<>();
