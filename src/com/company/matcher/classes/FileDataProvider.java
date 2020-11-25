@@ -8,14 +8,14 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class FileDataProvider implements DataProvider {
-    private final String path;
+    private final InputStream inputStream;
 
-    public FileDataProvider(String path) {
-        this.path = path;
+    public FileDataProvider(String path) throws FileNotFoundException {
+        File file = new File(path);
+        inputStream = new FileInputStream(file);
     }
 
-    public InputStream getData() throws FileNotFoundException {
-        File file = new File(path);
-        return new FileInputStream(file);
+    public InputStream getData() {
+        return inputStream;
     }
 }
