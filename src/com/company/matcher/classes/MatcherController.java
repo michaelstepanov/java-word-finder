@@ -84,7 +84,7 @@ public class MatcherController {
     /**
      * Matches words.
      */
-    private List<Future<HashMap<String, List<StringLocation>>>> matchWords(ExecutorService service, DataProvider dataProvider) throws FileNotFoundException {
+    private List<Future<HashMap<String, List<StringLocation>>>> matchWords(ExecutorService service, DataProvider dataProvider) {
         InputStream inputStream = dataProvider.getData();
         Scanner sc = new Scanner(inputStream, StandardCharsets.UTF_8);
 
