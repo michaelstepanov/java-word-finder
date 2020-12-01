@@ -117,6 +117,9 @@ public class MatcherController {
         return futures;
     }
 
+    /**
+     * Matches words in a chunk.
+     */
     private void matchWordsInChunk(StringBuilder chunk, Integer chunkNumber) {
         Matcher matcher = new Matcher(chunk.toString(), dictionary, chunkNumber * chunkSize);
 
