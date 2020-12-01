@@ -15,6 +15,8 @@ public class MatcherController {
     private final HashSet<String> dictionary;
     private final DataProvider dataProvider;
     private final Printer printer;
+    private ExecutorService service;
+    private List<Future<HashMap<String, List<StringLocation>>>> futures = new ArrayList<>();
 
     public MatcherController(DataProvider dataProvider, HashSet<String> dictionary, Printer printer, Integer chunkSize) throws ValidationException {
         this.dataProvider = dataProvider;
@@ -45,13 +47,13 @@ public class MatcherController {
     /**
      * Runs matching.
      */
-    public void process() throws FileNotFoundException, InterruptedException, ExecutionException {
+    public void process() throws InterruptedException, ExecutionException {
         // Create a thread pool
         int processors = Runtime.getRuntime().availableProcessors();
-        ExecutorService service = Executors.newFixedThreadPool(processors);
+        service = Executors.newFixedThreadPool(processors);
 
         // Match words
-        List<Future<HashMap<String, List<StringLocation>>>> futures = matchWords(service, dataProvider);
+        List<Future<HashMap<String, List<StringLocation>>>> futures = matchWords(dataProvider);
 
         // Initiate shutdown
         service.shutdown();
@@ -84,14 +86,13 @@ public class MatcherController {
     /**
      * Matches words.
      */
-    private List<Future<HashMap<String, List<StringLocation>>>> matchWords(ExecutorService service, DataProvider dataProvider) {
+    private List<Future<HashMap<String, List<StringLocation>>>> matchWords(DataProvider dataProvider) {
         InputStream inputStream = dataProvider.getData();
         Scanner sc = new Scanner(inputStream, StandardCharsets.UTF_8);
 
         int chunkNumber = 0;
         int lineInChunk = 0;
         StringBuilder chunk = new StringBuilder();
-        List<Future<HashMap<String, List<StringLocation>>>> futures = new ArrayList<>();
         while (sc.hasNextLine()) {
             lineInChunk++;
 
@@ -101,10 +102,7 @@ public class MatcherController {
             chunk.append(System.lineSeparator());
 
             if (lineInChunk == chunkSize) {
-                Matcher matcher = new Matcher(chunk.toString(), dictionary, chunkNumber * chunkSize);
-
-                Future<HashMap<String, List<StringLocation>>> future = service.submit(matcher);
-                futures.add(future);
+                matchWordsInChunk(chunk, chunkNumber);
 
                 lineInChunk = 0;
                 chunkNumber++;
@@ -114,6 +112,16 @@ public class MatcherController {
             }
         }
 
+        matchWordsInChunk(chunk, chunkNumber);
+
         return futures;
+    }
+
+    private void matchWordsInChunk(StringBuilder chunk, Integer chunkNumber) {
+        Matcher matcher = new Matcher(chunk.toString(), dictionary, chunkNumber * chunkSize);
+
+        Future<HashMap<String, List<StringLocation>>> future = service.submit(matcher);
+
+        futures.add(future);
     }
 }
