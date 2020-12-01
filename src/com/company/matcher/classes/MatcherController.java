@@ -15,8 +15,8 @@ public class MatcherController {
     private final HashSet<String> dictionary;
     private final DataProvider dataProvider;
     private final Printer printer;
+    private final List<Future<HashMap<String, List<StringLocation>>>> futures = new ArrayList<>();
     private ExecutorService service;
-    private List<Future<HashMap<String, List<StringLocation>>>> futures = new ArrayList<>();
 
     public MatcherController(DataProvider dataProvider, HashSet<String> dictionary, Printer printer, Integer chunkSize) throws ValidationException {
         this.dataProvider = dataProvider;
